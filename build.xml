@@ -1,0 +1,33 @@
+<project name="Salesforce Ant tasks" default="test" basedir="." xmlns:sf="antlib:com.salesforce">
+    <property name="sf.maxPoll" value="20"/>
+    <import file="antTasks/ImportCredentials.xml"/>
+    <import file="antTasks/executeApex.xml"/>
+
+    <taskdef resource="com/salesforce/antlib.xml" uri="antlib:com.salesforce">
+        <classpath>
+            <pathelement location="ant-salesforce.jar" />
+        </classpath>
+    </taskdef>
+
+    <target name="magicConfig" depends="importCredentials">
+        <!--prepare src folder with namespace-->
+        <copy todir="src_temp" overwrite="true">
+            <fileset dir="src_to_modify"/>
+        </copy>
+        <replace token="[namespace]" value="${sf.namespace}" dir="src_temp/"/>
+    
+        <sf:deploy username="${sf.username}" password="${sf.password}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" 
+                   deployRoot="src_temp" rollbackOnError="true"/>
+        <!--clean up on success-->
+        <delete dir="src_temp" />
+
+        <loadfile property="scriptFile" srcFile="apex/ApexScript.cls"/>
+        <loadfile property="configurationFile" srcFile="apex/MetadataConfiguration.cls"/>
+
+        <executeAnonymous username="${sf.username}" password="${sf.password}" serverurl="${sf.serverurl}">
+            final String NAMESPACE = '${sf.namespace}';
+            ${configurationFile}
+            ${scriptFile}
+        </executeAnonymous>
+    </target>
+</project>

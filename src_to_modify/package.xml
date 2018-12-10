@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>Admin</members>
+        <members>District Manager</members>
+        <members>Key Account Manager</members>
+        <members>Medical Science Liaison</members>
+        <members>National Account Manager</members>
+        <members>OCE Admin</members>
+        <members>Regional Manager</members>
+        <members>Sales Representative</members>
+        <name>Profile</name>
+    </types>
+    <version>42.0</version>
+</Package>
