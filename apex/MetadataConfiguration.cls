@@ -59,3 +59,8 @@ final Map<String,Set<String>> LAYOUT_TO_QUICK_ACTION = new Map<String,Set<String
                 NAMESPACE + 'Meeting__c.' + NAMESPACE + 'LaunchPresentation'
         }
 };
+
+//Which standard buttons should be added to which layout
+final Map<String,Set<String>> LAYOUT_TO_STANDARD_BUTTON = new Map<String,Set<String>>{
+        NAMESPACE + 'Meeting__c-'+ NAMESPACE + 'Meeting Layout' => new Set<String>{'Edit'}
+};

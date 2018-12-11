@@ -6,11 +6,12 @@ Metadata.DeployContainer mdContainer = new Metadata.DeployContainer();
 addDBSchemaRecords(mdContainer);
 addTriggerHandlerRecords(mdContainer);
 addCustomMetadataQuickActionRecords(mdContainer);
-addLayoutQuickActionsMetadata(mdContainer);
+addLayoutsMetadata(mdContainer);
 Metadata.Operations.enqueueDeployment(mdContainer, null);
 
 
 //Service methods
+//Custom Metadata
 void addDBSchemaRecords(Metadata.DeployContainer mdContainer) { 
     for(sObject dbSchemaRecord : queryMetadata('DbSchema__mdt', DB_SCHEMA_TO_ACTIVATE)) {
         mdContainer.addMetadata(
@@ -52,35 +53,57 @@ Metadata.CustomMetadata buildActiveMetadataRecord(sObject metadataRecord) {
     return customMetadata;
 }
 
-void addLayoutQuickActionsMetadata(Metadata.DeployContainer mdContainer) {   
-    List<Metadata.Metadata> layouts = Metadata.Operations.retrieve(Metadata.MetadataType.Layout, new List<String>(LAYOUT_TO_QUICK_ACTION.keySet()));
-    
-    for(Metadata.Metadata layout : layouts){
-        Metadata.Layout la = (Metadata.Layout)layout;
-        for(String quickActionName : LAYOUT_TO_QUICK_ACTION.get(la.fullName)){
-            Metadata.QuickActionListItem quickAction = new Metadata.QuickActionListItem();
-            quickAction.quickActionName = quickActionName;
-            if(la.quickActionList != null && la.quickActionList.quickActionListItems != null){
-                Boolean doesAlreadyExist = false;
-                for(Metadata.QuickActionListItem action : la.quickActionList.quickActionListItems){
-                    if(action.quickActionName == quickActionName){
-                        doesAlreadyExist = true;
-                        break;
-                    }
-                }
-                if(!doesAlreadyExist){
-                    la.quickActionList.quickActionListItems.add(quickAction);
-                }
-            } else {
-                la.quickActionList = new Metadata.QuickActionList();
-                la.quickActionList.quickActionListItems = new List<Metadata.QuickActionListItem>();
-                la.quickActionList.quickActionListItems.add(quickAction);
-            }
+
+//Layouts
+void addLayoutsMetadata(Metadata.DeployContainer mdContainer) {
+    Set<String> layoutsToRetrieve = LAYOUT_TO_QUICK_ACTION.keySet().clone();
+    layoutsToRetrieve.addAll(LAYOUT_TO_STANDARD_BUTTON.keySet());
+    List<Metadata.Metadata> layouts = Metadata.Operations.retrieve(Metadata.MetadataType.Layout, 
+                                                                                new List<String>(layoutsToRetrieve));
+    for(Metadata.Metadata layoutMetadata : layouts) {
+        Metadata.Layout layout = (Metadata.Layout)layoutMetadata;
+
+        if (LAYOUT_TO_QUICK_ACTION.containsKey(layout.fullName)) {
+            addQuickActionsToLayout(layout);
         }
-        mdContainer.addMetadata(la);
+        if (LAYOUT_TO_STANDARD_BUTTON.containsKey(layout.fullName)) {
+            addExcludedButtonsToLayout(layout);
+        }
+
+        mdContainer.addMetadata(layout);
     }
 }
 
+void addQuickActionsToLayout(Metadata.Layout layout) {
+    Set<String> quickActionsToAdd = LAYOUT_TO_QUICK_ACTION.get(layout.fullName).clone();
+    //Check existing layout settings
+    if(layout.quickActionList == null) {
+        layout.quickActionList = new Metadata.QuickActionList();
+        layout.quickActionList.quickActionListItems = new List<Metadata.QuickActionListItem>();
+    } else if (layout.quickActionList.quickActionListItems == null) {
+        layout.quickActionList.quickActionListItems = new List<Metadata.QuickActionListItem>();
+    } else {
+        //Exclude already added actions
+        for(Metadata.QuickActionListItem action : layout.quickActionList.quickActionListItems) {
+            quickActionsToAdd.remove(action.quickActionName);
+        }
+    }
+
+    //Add other actions
+    for(String quickActionToAdd : quickActionsToAdd){
+        Metadata.QuickActionListItem quickAction = new Metadata.QuickActionListItem();
+        quickAction.quickActionName = quickActionToAdd;
+        layout.quickActionList.quickActionListItems.add(quickAction);
+    }
+}
+
+void addExcludedButtonsToLayout(Metadata.Layout layout) {
+    Set<String> removedButtons = new Set<String>(layout.excludeButtons);
+    removedButtons.removeAll(LAYOUT_TO_STANDARD_BUTTON.get(layout.fullName));
+    layout.excludeButtons = new List<String>(removedButtons);
+}
+
+//Permission Sets
 void assignPermissionSetsToAdminAndSR() {
     List<PermissionSetAssignment> assignments = new List<PermissionSetAssignment>();
     for (String profile : USERS_PROFILE_TO_PERMISSION_SET.keySet()) {
