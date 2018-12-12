@@ -11,5 +11,9 @@
         <members>Sales Representative</members>
         <name>Profile</name>
     </types>
+    <types>
+        <members>OCE</members>
+        <name>CustomApplication</name>
+    </types>
     <version>42.0</version>
 </Package>
