@@ -13,6 +13,9 @@
         <!--prepare src folder with namespace-->
         <copy todir="src_temp" overwrite="true">
             <fileset dir="src_to_modify"/>
+            <filtermapper>
+                <replacestring from="[namespace]" to="${sf.namespace}"/>
+            </filtermapper>
         </copy>
         <replace token="[namespace]" value="${sf.namespace}" dir="src_temp/"/>
     

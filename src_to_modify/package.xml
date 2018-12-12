@@ -23,5 +23,9 @@
         <members>*</members>
         <name>RemoteSiteSetting</name>
     </types>
+    <types>
+        <members>*</members>
+        <name>TopicsForObjects</name>
+    </types>
     <version>44.0</version>
 </Package>
