@@ -12,10 +12,6 @@
         <name>Profile</name>
     </types>
     <types>
-        <members>OCE</members>
-        <name>CustomApplication</name>
-    </types>
-    <types>
         <members>*</members>
         <name>CspTrustedSite</name>
     </types>
