@@ -30,7 +30,6 @@ final Set<String> DB_SCHEMA_TO_ACTIVATE = new Set<String>{
         'OptSettings_c',
         'Speaker_c',
         'TopicProduct_c',
-        'Topic_c',
         'TopicMaterial_c',
         'Location_c',
         'ExpenseType_c'
