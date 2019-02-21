@@ -8,6 +8,9 @@ final Map<String, Set<String>> USERS_PROFILE_TO_PERMISSION_SET = new Map<String,
 
 //DbSchema records to Activate(DeveloperName)
 final Set<String> DB_SCHEMA_TO_ACTIVATE = new Set<String>{
+        'ContentDocument',
+        'ContentDocumentLink',
+        'ContentVersion',
         'EmailSettings_c',
         'EmailTemplate_c',
         'EmailTemplateVersion_c',
