@@ -32,7 +32,10 @@ final Set<String> DB_SCHEMA_TO_ACTIVATE = new Set<String>{
         'TopicProduct_c',
         'TopicMaterial_c',
         'Location_c',
-        'ExpenseType_c'
+        'ExpenseType_c',
+        'TOTRule_mdt',
+        'TOTSettings_c',
+        'TimeOffTerritorySlots_c'
 };
 
 //QuickAction custom metadata records to Activate('DeveloperName')
@@ -46,7 +49,10 @@ final Set<String> TRIGGER_HANDLERS_TO_ACTIVATE = new Set<String>{
         'AttachmentEmailTransactionHandler',
         'EmailQueueImmediate',
         'EmailQueueRecipient',
-        'EmailQueueSender'
+        'EmailQueueSender',
+        'GeneralEventTOTValidationHandler',
+        'TOTGeneralEventValidationHandler',
+        'TOTOtherTOTValidationHandler'
 };
 
 //Which quick actions should be added to which layout
