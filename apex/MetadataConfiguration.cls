@@ -2,8 +2,8 @@
 
 //Assign permission sets to users with specified profiles
 final Map<String, Set<String>> USERS_PROFILE_TO_PERMISSION_SET = new Map<String, Set<String>>{
-        'OCE Admin' => new Set<String>{'Meeting_Admin', 'Meeting_User', 'EmailAdministration', 'TimeOffTerritoryAdministration'},
-        'Sales Representative' => new Set<String>{'Meeting_User', 'EmailUser', 'TimeOffTerritoryUser'}
+        'OCE Admin' => new Set<String>{'Meeting_Admin', 'Meeting_User', 'EmailAdministration', 'TimeOffTerritoryAdministration', 'DocumentAdmin'},
+        'Sales Representative' => new Set<String>{'Meeting_User', 'EmailUser', 'TimeOffTerritoryUser', 'DocumentUser'}
 };
 
 //DbSchema records to Activate(DeveloperName)
@@ -35,7 +35,10 @@ final Set<String> DB_SCHEMA_TO_ACTIVATE = new Set<String>{
         'ExpenseType_c',
         'TOTRule_mdt',
         'TOTSettings_c',
-        'TimeOffTerritorySlots_c'
+        'TimeOffTerritorySlots_c',
+        'DocumentTemplateVersion_c',
+        'DocumentTemplate_c',
+        'Document_c'
 };
 
 //QuickAction custom metadata records to Activate('DeveloperName')
@@ -58,7 +61,12 @@ final Set<String> TRIGGER_HANDLERS_TO_ACTIVATE = new Set<String>{
 //Which quick actions should be added to which layout
 final Map<String,Set<String>> LAYOUT_TO_QUICK_ACTION = new Map<String,Set<String>>{
         'PersonAccount-' + NAMESPACE + 'Business Contact Page Layout' => new Set<String>{
-                'Account.'+ NAMESPACE + 'Email'
+                'Account.'+ NAMESPACE + 'Email',
+                'Account.'+ NAMESPACE + 'GenerateDocument'
+        },
+        'Account-' + NAMESPACE + 'Institution Layout' => new Set<String>{
+                'Account.'+ NAMESPACE + 'Email',
+                'Account.'+ NAMESPACE + 'GenerateDocument'
         },
         NAMESPACE + 'Meeting__c-'+ NAMESPACE + 'Meeting Layout' => new Set<String>{
                 NAMESPACE + 'Meeting__c.' + NAMESPACE + 'LaunchPresentation'
