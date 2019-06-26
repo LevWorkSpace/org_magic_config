@@ -38,7 +38,12 @@ final Set<String> DB_SCHEMA_TO_ACTIVATE = new Set<String>{
         'TimeOffTerritorySlots_c',
         'DocumentTemplateVersion_c',
         'DocumentTemplate_c',
-        'Document_c'
+        'Document_c',
+        'StandardTopic',
+        'StandardTopicAssignment',
+        'ContentDocument',
+        'ContentDocumentLink',
+        'ContentVersion'
 };
 
 //QuickAction custom metadata records to Activate('DeveloperName')
