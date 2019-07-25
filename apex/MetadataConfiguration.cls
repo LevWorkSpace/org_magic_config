@@ -2,8 +2,8 @@
 
 //Assign permission sets to users with specified profiles
 final Map<String, Set<String>> USERS_PROFILE_TO_PERMISSION_SET = new Map<String, Set<String>>{
-        'OCE Admin' => new Set<String>{'Meeting_Admin', 'Meeting_User', 'EmailAdministration', 'TimeOffTerritoryAdministration', 'DocumentAdmin'},
-        'Sales Representative' => new Set<String>{'Meeting_User', 'EmailUser', 'TimeOffTerritoryUser', 'DocumentUser'}
+        'OCE Admin' => new Set<String>{'Meeting_Admin', 'Meeting_User', 'EmailAdministration', 'TimeOffTerritoryAdministration', 'DocumentAdmin', 'ProductAdministration'},
+        'Sales Representative' => new Set<String>{'Meeting_User', 'EmailUser', 'TimeOffTerritoryUser', 'DocumentUser', 'ProductUser'}
 };
 
 //DbSchema records to Activate(DeveloperName)
