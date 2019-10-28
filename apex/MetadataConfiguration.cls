@@ -2,12 +2,16 @@
 
 //Assign permission sets to users with specified profiles
 final Map<String, Set<String>> USERS_PROFILE_TO_PERMISSION_SET = new Map<String, Set<String>>{
-        'OCE Admin' => new Set<String>{'Meeting_Admin', 'Meeting_User', 'EmailAdministration', 'TimeOffTerritoryAdministration', 'DocumentAdmin', 'ProductAdministration'},
-        'Sales Representative' => new Set<String>{'Meeting_User', 'EmailUser', 'TimeOffTerritoryUser', 'DocumentUser', 'ProductUser'}
+        'OCE Admin' => new Set<String> {'Meeting_Admin', 'Meeting_User', 'EmailAdministration',
+                                        'TimeOffTerritoryAdministration', 'DocumentAdmin', 'ProductAdministration',
+                                        'WeChatAdministration'},
+        'Sales Representative' => new Set<String> {'Meeting_User', 'EmailUser', 'TimeOffTerritoryUser',
+                                                   'DocumentUser', 'ProductUser', 'WeChatUser'}
 };
 
 //DbSchema records to Activate(DeveloperName)
 final Set<String> DB_SCHEMA_TO_ACTIVATE = new Set<String>{
+        'ContentTemplate_c',
         'EmailSettings_c',
         'EmailTemplate_c',
         'EmailTemplateVersion_c',
@@ -43,7 +47,8 @@ final Set<String> DB_SCHEMA_TO_ACTIVATE = new Set<String>{
         'StandardTopicAssignment',
         'ContentDocument',
         'ContentDocumentLink',
-        'ContentVersion'
+        'ContentVersion',
+        'QIDC_WC_Template_c'
 };
 
 //QuickAction custom metadata records to Activate('DeveloperName')
@@ -67,11 +72,13 @@ final Set<String> TRIGGER_HANDLERS_TO_ACTIVATE = new Set<String>{
 final Map<String,Set<String>> LAYOUT_TO_QUICK_ACTION = new Map<String,Set<String>>{
         'PersonAccount-' + NAMESPACE + 'Business Contact Page Layout' => new Set<String>{
                 'Account.'+ NAMESPACE + 'Email',
-                'Account.'+ NAMESPACE + 'GenerateDocument'
+                'Account.'+ NAMESPACE + 'GenerateDocument',
+                'Account.'+ NAMESPACE + 'ShareContent'
         },
         'Account-' + NAMESPACE + 'Institution Layout' => new Set<String>{
                 'Account.'+ NAMESPACE + 'Email',
-                'Account.'+ NAMESPACE + 'GenerateDocument'
+                'Account.'+ NAMESPACE + 'GenerateDocument',
+                'Account.'+ NAMESPACE + 'ShareContent'
         },
         NAMESPACE + 'Meeting__c-'+ NAMESPACE + 'Meeting Layout' => new Set<String>{
                 NAMESPACE + 'Meeting__c.' + NAMESPACE + 'LaunchPresentation'

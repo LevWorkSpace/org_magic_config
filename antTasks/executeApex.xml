@@ -13,7 +13,7 @@
             <login username="@{username}" password="@{password}" serverurl="@{serverurl}" />
 
             <!-- Execute using HTTP GET -->
-            <ml:http url="${instance}/services/data/v34.0/tooling/executeAnonymous" method="GET" outfile="results/executeAnonymousResult.json"  statusProperty="loginResponseStatus">
+            <ml:http url="${instance}/services/data/v47.0/tooling/executeAnonymous" method="GET" outfile="results/executeAnonymousResult.json"  statusProperty="loginResponseStatus">
                 <headers>
                     <header name="Authorization" value="Bearer ${sessionId}"/>
                 </headers>
@@ -43,7 +43,7 @@
         <attribute name="serverurl" description="Salesforce endpoint."/>    
         <sequential>
             <!-- Obtain Session Id via Login SOAP service -->
-            <ml:http url="@{serverurl}/services/Soap/c/34.0" method="POST" failonunexpected="false" outfile="results/loginResult.xml" statusProperty="loginResponseStatus">
+            <ml:http url="@{serverurl}/services/Soap/c/47.0" method="POST" failonunexpected="false" outfile="results/loginResult.xml" statusProperty="loginResponseStatus">
                 <headers>
                     <header name="Content-Type" value="text/xml"/>
                     <header name="SOAPAction" value="login"/>

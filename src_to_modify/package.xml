@@ -19,5 +19,9 @@
         <members>*</members>
         <name>TopicsForObjects</name>
     </types>
-    <version>45.0</version>
+	<types>
+        <members>*</members>
+        <name>CustomObject</name>
+    </types>
+    <version>47.0</version>
 </Package>
