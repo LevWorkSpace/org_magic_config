@@ -8,6 +8,17 @@
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Email Transactions</pluralLabel>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <description>Used for storing information about Emails that should be sent.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <enableSearch>false</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
     <sharingModel>Private</sharingModel>
     <recordTypes>
         <fullName>Email</fullName>
