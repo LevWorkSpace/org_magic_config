@@ -9,13 +9,14 @@
         <attribute name="serverurl" description="Salesforce endpoint."/>
         <text name="apexcode"/>
         <sequential>
-            <!-- Login to populate serverUrl / sessionId / instance -->
-            <login username="@{username}" password="@{password}" serverurl="@{serverurl}" />
-
             <!--silence logging-->
             <script language="javascript">
                 project.getBuildListeners().firstElement().setMessageOutputLevel(0);
             </script>
+
+            <!-- Login to populate serverUrl / sessionId / instance -->
+            <login username="@{username}" password="@{password}" serverurl="@{serverurl}" />
+
             <!-- Execute using HTTP GET -->
             <ml:http url="${instance}/services/data/v47.0/tooling/executeAnonymous" method="GET"
                      outfile="results/executeAnonymousResult.json" statusProperty="loginResponseStatus">
@@ -26,6 +27,7 @@
                     <parameter name="anonymousBody" value="@{apexcode}"/>
                 </query>
             </ml:http>
+
             <!--reverting logging back-->
             <script language="javascript">
                 project.getBuildListeners().firstElement().setMessageOutputLevel(2);
@@ -33,17 +35,16 @@
 
             <!-- Fail on error -->
             <loadfile property="executeAnonymousResult" srcFile="results/executeAnonymousResult.json" />
+
             <fail message="Execute Anonymous failed: ${executeAnonymousResult}">
                 <condition>
                     <resourcecontains resource="results/executeAnonymousResult.json" substring="&quot;success&quot;:false" />
                 </condition>
             </fail>
 
-            <!-- Show output -->
-            <echo message="${executeAnonymousResult}" />
             <!--clean up on success-->
             <delete dir="results" />
-
+            <echo message="*********** EXECUTION  SUCCEEDED ***********"/>
         </sequential>
     </macrodef>
 

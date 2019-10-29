@@ -10,6 +10,7 @@
     </taskdef>
 
     <target name="magicConfig" depends="importCredentials">
+        <echo message="____________DEPLOY SRC METADATA_____________" />
         <!--prepare src folder with namespace-->
         <copy todir="src_temp" overwrite="true">
             <fileset dir="src_to_modify"/>
@@ -24,6 +25,7 @@
         <!--clean up on success-->
         <delete dir="src_temp" />
 
+        <echo message="____________EXECUTE APEX SCRIPT_____________" />
         <loadfile property="scriptFile" srcFile="apex/ApexScript.cls"/>
         <loadfile property="configurationFile" srcFile="apex/MetadataConfiguration.cls"/>
 
