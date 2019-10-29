@@ -12,8 +12,13 @@
             <!-- Login to populate serverUrl / sessionId / instance -->
             <login username="@{username}" password="@{password}" serverurl="@{serverurl}" />
 
+            <!--silence logging-->
+            <script language="javascript">
+                project.getBuildListeners().firstElement().setMessageOutputLevel(0);
+            </script>
             <!-- Execute using HTTP GET -->
-            <ml:http url="${instance}/services/data/v47.0/tooling/executeAnonymous" method="GET" outfile="results/executeAnonymousResult.json"  statusProperty="loginResponseStatus">
+            <ml:http url="${instance}/services/data/v47.0/tooling/executeAnonymous" method="GET"
+                     outfile="results/executeAnonymousResult.json" statusProperty="loginResponseStatus">
                 <headers>
                     <header name="Authorization" value="Bearer ${sessionId}"/>
                 </headers>
@@ -21,6 +26,10 @@
                     <parameter name="anonymousBody" value="@{apexcode}"/>
                 </query>
             </ml:http>
+            <!--reverting logging back-->
+            <script language="javascript">
+                project.getBuildListeners().firstElement().setMessageOutputLevel(2);
+            </script>
 
             <!-- Fail on error -->
             <loadfile property="executeAnonymousResult" srcFile="results/executeAnonymousResult.json" />
@@ -34,6 +43,7 @@
             <echo message="${executeAnonymousResult}" />
             <!--clean up on success-->
             <delete dir="results" />
+
         </sequential>
     </macrodef>
 
