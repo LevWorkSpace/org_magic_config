@@ -65,7 +65,8 @@ final Set<String> TRIGGER_HANDLERS_TO_ACTIVATE = new Set<String>{
         'EmailQueueSender',
         'GeneralEventTOTValidationHandler',
         'TOTGeneralEventValidationHandler',
-        'TOTOtherTOTValidationHandler'
+        'TOTOtherTOTValidationHandler',
+        'MessageQueueTransactions'
 };
 
 //Which quick actions should be added to which layout
