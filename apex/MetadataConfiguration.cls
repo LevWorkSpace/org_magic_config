@@ -4,9 +4,10 @@
 final Map<String, Set<String>> USERS_PROFILE_TO_PERMISSION_SET = new Map<String, Set<String>>{
         'OCE Admin' => new Set<String> {'Meeting_Admin', 'Meeting_User', 'EmailAdministration',
                                         'TimeOffTerritoryAdministration', 'DocumentAdmin', 'ProductAdministration',
-                                        'WeChatAdministration'},
+                                        'WeChatAdministration', 'InsightUser'},
         'Sales Representative' => new Set<String> {'Meeting_User', 'EmailUser', 'TimeOffTerritoryUser',
-                                                   'DocumentUser', 'ProductUser', 'WeChatUser'}
+                                                   'DocumentUser', 'ProductUser', 'WeChatUser', 'InsightUser'},
+        'Medical Science Liaison' => new Set<String> {'InsightUser'}
 };
 
 //DbSchema records to Activate(DeveloperName)
@@ -48,7 +49,15 @@ final Set<String> DB_SCHEMA_TO_ACTIVATE = new Set<String>{
         'ContentDocument',
         'ContentDocumentLink',
         'ContentVersion',
-        'QIDC_WC_Template_c'
+        'QIDC_WC_Template_c',
+        'InsightSettings_c',
+        'Insight_c',
+        'Vote_c'
+};
+
+//UiSchema records to Activate(DeveloperName)
+final Set<String> UI_SCHEMA_TO_ACTIVATE = new Set<String>{
+        'InsightsTab'
 };
 
 //QuickAction custom metadata records to Activate('DeveloperName')
@@ -66,7 +75,8 @@ final Set<String> TRIGGER_HANDLERS_TO_ACTIVATE = new Set<String>{
         'GeneralEventTOTValidationHandler',
         'TOTGeneralEventValidationHandler',
         'TOTOtherTOTValidationHandler',
-        'MessageQueueTransactions'
+        'MessageQueueTransactions',
+        'VoteInsightRecalculation'
 };
 
 //Which quick actions should be added to which layout

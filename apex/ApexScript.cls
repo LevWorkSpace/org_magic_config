@@ -4,6 +4,7 @@ assignPermissionSetsToAdminAndSR();
 
 Metadata.DeployContainer mdContainer = new Metadata.DeployContainer();
 addDBSchemaRecords(mdContainer);
+addUISchemaRecords(mdContainer);
 addTriggerHandlerRecords(mdContainer);
 addCustomMetadataQuickActionRecords(mdContainer);
 addLayoutsMetadata(mdContainer);
@@ -12,10 +13,18 @@ Metadata.Operations.enqueueDeployment(mdContainer, null);
 
 //Service methods
 //Custom Metadata
-void addDBSchemaRecords(Metadata.DeployContainer mdContainer) { 
+void addDBSchemaRecords(Metadata.DeployContainer mdContainer) {
     for(sObject dbSchemaRecord : queryMetadata('DbSchema__mdt', DB_SCHEMA_TO_ACTIVATE)) {
         mdContainer.addMetadata(
             buildActiveMetadataRecord(dbSchemaRecord)
+        );
+    }
+}
+
+void addUISchemaRecords(Metadata.DeployContainer mdContainer) {
+    for(sObject uiSchemaRecord : queryMetadata('UiSchema__mdt', UI_SCHEMA_TO_ACTIVATE)) {
+        mdContainer.addMetadata(
+                buildActiveMetadataRecord(uiSchemaRecord)
         );
     }
 }
