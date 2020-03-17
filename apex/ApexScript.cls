@@ -1,5 +1,5 @@
 //Script is using MetadataConfiguration constants
-
+addCustomPermissionsToPermissionSets();
 assignPermissionSetsToAdminAndSR();
 
 Metadata.DeployContainer mdContainer = new Metadata.DeployContainer();
@@ -114,29 +114,73 @@ void addExcludedButtonsToLayout(Metadata.Layout layout) {
 
 //Permission Sets
 void assignPermissionSetsToAdminAndSR() {
+    //gather Permission Sets
+    Set<String> permissionSetNames = new Set<String>();
+    for (Set<String> psNames : USERS_PROFILE_TO_PERMISSION_SET.values()) {
+        permissionSetNames.addAll(psNames);
+    }
+    Map<String, Id> permissionSetNameToId = new Map<String, Id>();
+    for (PermissionSet ps : [SELECT Id, Name FROM PermissionSet WHERE Name IN :permissionSetNames]) {
+        permissionSetNameToId.put(ps.Name, ps.Id);
+    }
+
+    //gather Profile Users
+    Map<String, Set<Id>> profileNameToUserIds = new Map<String, Set<Id>>();
+    for (User user : [SELECT Id, Profile.Name FROM User WHERE Profile.Name IN :USERS_PROFILE_TO_PERMISSION_SET.keySet()]) {
+        if (profileNameToUserIds.containsKey(user.Profile.Name)) {
+            profileNameToUserIds.get(user.Profile.Name).add(user.Id);
+        } else {
+            profileNameToUserIds.put(user.Profile.Name, new Set<Id>{user.Id});
+        }
+    }
+
+    //Assign all profiles users to specified permission sets
     List<PermissionSetAssignment> assignments = new List<PermissionSetAssignment>();
-    for (String profile : USERS_PROFILE_TO_PERMISSION_SET.keySet()) {
-        assignments.addAll(createPermissionSetAssignments(profile, USERS_PROFILE_TO_PERMISSION_SET.get(profile)));
+    for (String profileName : USERS_PROFILE_TO_PERMISSION_SET.keySet()) {
+        for (String permissionSetName : USERS_PROFILE_TO_PERMISSION_SET.get(profileName)) {
+            for (Id userId : profileNameToUserIds.get(profileName)) {
+                assignments.add(
+                        new PermissionSetAssignment(
+                                AssigneeId = userId,
+                                PermissionSetId = permissionSetNameToId.get(permissionSetName)
+                        )
+                );
+            }
+        }
     }
 
     //Skip duplicates - already created assignments
     Database.insert(assignments, false);
 }
 
-List<PermissionSetAssignment> createPermissionSetAssignments(String profileName, Set<String> permissionSetNames) {
-    List<PermissionSet> permissionSets = [SELECT Id FROM PermissionSet WHERE Name IN :permissionSetNames];
-    List<User> users = [SELECT Id FROM User WHERE Profile.Name = :profileName];
+//Custom Permissions
+void addCustomPermissionsToPermissionSets() {
+    Map<String, Id> permissionSetNameToId = new Map<String, Id>();
+    for (PermissionSet ps : [SELECT Id, Name FROM PermissionSet WHERE Name IN :PERMISSION_SET_TO_CUSTOM_PERMISSIONS.keySet()]) {
+        permissionSetNameToId.put(ps.Name, ps.Id);
+    }
 
-    List<PermissionSetAssignment> assignments = new List<PermissionSetAssignment>();
+    Set<String> customPermissionNames = new Set<String>();
+    for (Set<String> cpNames : PERMISSION_SET_TO_CUSTOM_PERMISSIONS.values()) {
+        customPermissionNames.addAll(cpNames);
+    }
+    Map<String, Id> customPermissionNameToId = new Map<String, Id>();
+    for (CustomPermission ps : [SELECT Id, DeveloperName FROM CustomPermission WHERE DeveloperName IN :customPermissionNames]) {
+        customPermissionNameToId.put(ps.DeveloperName, ps.Id);
+    }
 
-    for (User user : users) {
-        for (PermissionSet permissionSet : permissionSets) {
-            assignments.add(new PermissionSetAssignment(
-                    AssigneeId = user.Id,
-                    PermissionSetId = permissionSet.Id
-            ));
+    List<SetupEntityAccess> accesses = new List<SetupEntityAccess>();
+    for (String psName : PERMISSION_SET_TO_CUSTOM_PERMISSIONS.keySet()) {
+        for (String cpName : PERMISSION_SET_TO_CUSTOM_PERMISSIONS.get(psName)) {
+            accesses.add(
+                    new SetupEntityAccess(
+                            ParentId = permissionSetNameToId.get(psName),
+                            SetupEntityId = customPermissionNameToId.get(cpName)
+                    )
+            );
         }
     }
 
-    return assignments;
+    //Skip duplicates - already created accesses
+    Database.insert(accesses, false);
 }

@@ -1,13 +1,18 @@
 //Constants to be used in apex script
 
 //Assign permission sets to users with specified profiles
-final Map<String, Set<String>> USERS_PROFILE_TO_PERMISSION_SET = new Map<String, Set<String>>{
+final Map<String, Set<String>> USERS_PROFILE_TO_PERMISSION_SET = new Map<String, Set<String>> {
         'OCE Admin' => new Set<String> {'Meeting_Admin', 'Meeting_User', 'EmailAdministration',
                                         'TimeOffTerritoryAdministration', 'DocumentAdmin', 'ProductAdministration',
                                         'WeChatAdministration', 'InsightUser'},
         'Sales Representative' => new Set<String> {'Meeting_User', 'EmailUser', 'TimeOffTerritoryUser',
                                                    'DocumentUser', 'ProductUser', 'WeChatUser', 'InsightUser'},
         'Medical Science Liaison' => new Set<String> {'InsightUser'}
+};
+
+//Add custom permission to permission sets
+final Map<String, Set<String>> PERMISSION_SET_TO_CUSTOM_PERMISSIONS = new Map<String, Set<String>> {
+        'InsightUser' => new Set<String> {'InsightCaptureFromAccount', 'InsightCaptureFromHome', 'InsightCaptureFromMeeting'}
 };
 
 //DbSchema records to Activate(DeveloperName)
