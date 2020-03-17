@@ -55,7 +55,6 @@ final Set<String> DB_SCHEMA_TO_ACTIVATE = new Set<String>{
         'ContentDocumentLink',
         'ContentVersion',
         'QIDC_WC_Template_c',
-        'InsightSettings_c',
         'Insight_c',
         'Vote_c'
 };
