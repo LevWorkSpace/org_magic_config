@@ -42,8 +42,6 @@
                 </condition>
             </fail>
 
-            <!--clean up on success-->
-            <delete dir="results" />
             <echo message="*********** EXECUTION  SUCCEEDED ***********"/>
         </sequential>
     </macrodef>

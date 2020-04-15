@@ -19,20 +19,31 @@
             </filtermapper>
         </copy>
         <replace token="[namespace]" value="${sf.namespace}" dir="src_temp/"/>
-    
-        <sf:deploy username="${sf.username}" password="${sf.password}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" 
+
+        <sf:deploy username="${sf.username}" password="${sf.password}" serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}"
                    deployRoot="src_temp" rollbackOnError="true"/>
         <!--clean up on success-->
         <delete dir="src_temp" />
-
-        <echo message="____________EXECUTE APEX SCRIPT_____________" />
-        <loadfile property="scriptFile" srcFile="apex/ApexScript.cls"/>
-        <loadfile property="configurationFile" srcFile="apex/MetadataConfiguration.cls"/>
+        <echo/>
+        <echo message="____________EXECUTE METADATA API SCRIPT_____________" />
+        <loadfile property="metadataApiScript" srcFile="apex/MetadataApiScript.cls"/>
+        <loadfile property="metadataConfiguration" srcFile="apex/MetadataConfiguration.cls"/>
 
         <executeAnonymous username="${sf.username}" password="${sf.password}" serverurl="${sf.serverurl}">
             final String NAMESPACE = '${sf.namespace}';
-            ${configurationFile}
-            ${scriptFile}
+            ${metadataConfiguration}
+            ${metadataApiScript}
         </executeAnonymous>
+        <echo/>
+        <echo message="____________EXECUTE APEX SCRIPT_____________" />
+        <loadfile property="apexScript" srcFile="apex/ApexScript.cls"/>
+
+        <executeAnonymous username="${sf.username}" password="${sf.password}" serverurl="${sf.serverurl}">
+            final String NAMESPACE = '${sf.namespace}';
+            ${apexScript}
+        </executeAnonymous>
+        <echo/>
+        <!--clean up on success-->
+        <delete dir="results" />
     </target>
 </project>
